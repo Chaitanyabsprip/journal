@@ -1,0 +1,43 @@
+{{ block "index" . }}
+<!doctype html>
+<html hx-headers='{"Accept": "text/html"}' lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="static/htmx.1.9.11.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/json-enc.js"></script>
+    <title>Journal</title>
+</head>
+
+<body style="background-color:#0f111a;">
+    {{ template "button" }}
+    <hr>
+    {{ template "log" . }}
+</body>
+
+</html>
+{{ end }}
+
+{{ block "button" . }}
+<div hx-vals='js:{"type": "water","detail":"", "created_at":(new Date()).toISOString()}' hx-ext='json-enc'
+    hx-post="/api/v1/entry" hx-target="#log" class="column root"
+    style="display: flex; flex-direction: column; justify-content: center; align-content: center; height: 30vh">
+    <button id="drank-water-btn" style="align-self: center; scale: 3">Drank Water</button>
+</div>
+{{ end }}
+
+{{ block "log" . }}
+<div id="log" style="color: white">
+    <h1>Log</h1>
+    <ul>
+        {{range .}}
+        <li>
+            <strong>Type:</strong> {{.Type}},
+            <strong>Detail:</strong> {{.Detail}},
+            <strong>Created At:</strong> {{.CreatedAt.Format "2006-01-02 15:04:05"}}
+        </li>
+        {{end}}
+    </ul>
+</div>
+{{ end }}
