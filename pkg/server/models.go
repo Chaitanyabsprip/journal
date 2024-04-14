@@ -30,5 +30,8 @@ func GetEnteries(ctx context.Context) ([]Entry, error) {
 	if err != nil {
 		return nil, err
 	}
+	for i, entry := range entries {
+		entries[i].CreatedAt = entry.CreatedAt.Local()
+	}
 	return entries, nil
 }
